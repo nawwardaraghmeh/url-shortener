@@ -70,3 +70,8 @@ app.post("/register", async (req, res) => {
     res.redirect("/register");
   }
 });
+
+// route for home page
+app.get("/index", (req, res) => {
+  res.render("index.ejs");
+});
