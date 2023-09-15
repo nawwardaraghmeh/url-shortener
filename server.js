@@ -95,13 +95,6 @@ app.get("/", async (req, res) => {
   res.render("index", { shortUrls: shortUrls });
 });
 
-// handle post request to create short URLs
-app.post("/shortUrls", async (req, res) => {
-  await ShortUrl.create({ full: req.body.fullUrl });
-
-  res.redirect("/"); // redirect to the root url after creating a short version
-});
-
 // handle requests to access short URLs
 app.get("/:shortUrl", async (req, res) => {
   const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl }); // check if short url exists
@@ -112,4 +105,94 @@ app.get("/:shortUrl", async (req, res) => {
   res.redirect(shortUrl.full);
 });
 
-app.listen(2000);
+// create a new short URL
+app.post("/urls", async (req, res) => {
+  try {
+    const { fullUrl } = req.body;
+    if (!fullUrl) {
+      return res.status(400).json({ error: "Full URL is required" });
+    }
+
+    // create a new short URL
+    const shortUrl = await ShortUrl.create({ full: fullUrl });
+
+    res.status(201).json({ shortUrl });
+  } catch (error) {
+    console.error("Error creating short URL:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// read all short URLs
+app.get("/urls", async (req, res) => {
+  try {
+    const shortUrls = await ShortUrl.find();
+    res.status(200).json(shortUrls);
+  } catch (error) {
+    console.error("Error reading short URLs:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// read a specific short URL by ID
+app.get("/urls/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const shortUrl = await ShortUrl.findById(id);
+
+    if (!shortUrl) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    res.status(200).json(shortUrl);
+  } catch (error) {
+    console.error("Error reading short URL:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// update a short URL by ID
+app.put("/urls/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullUrl } = req.body;
+
+    if (!fullUrl) {
+      return res.status(400).json({ error: "Full URL is required" });
+    }
+
+    const shortUrl = await ShortUrl.findByIdAndUpdate(
+      id,
+      { full: fullUrl },
+      { new: true }
+    );
+
+    if (!shortUrl) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    res.status(200).json(shortUrl);
+  } catch (error) {
+    console.error("Error updating short URL:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// delete a short URL by ID
+app.delete("/urls/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const shortUrl = await ShortUrl.findByIdAndDelete(id);
+
+    if (!shortUrl) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    res.status(204).send(); // No content response for successful deletion
+  } catch (error) {
+    console.error("Error deleting short URL:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.listen(5000);
