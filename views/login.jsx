@@ -16,7 +16,7 @@ import React from 'react'; function Login({ messages }) { return (
     <div className="container mt-4">
       <section className="background-radial-gradient overflow-hidden">
         <style>
-            {`
+             {`
             .background-radial-gradient {
               background-color: hsl(218, 41%, 15%);
               background-image: radial-gradient(
