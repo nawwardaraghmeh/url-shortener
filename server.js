@@ -33,8 +33,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.set("view engine", "ejs");
-
 // route for login page
 app.get("/login", (req, res) => {
   res.render("login.ejs");
@@ -109,13 +107,16 @@ app.get("/:shortUrl", async (req, res) => {
 app.post("/urls", async (req, res) => {
   try {
     const { fullUrl } = req.body;
+
+    // check if a valid full url is provided
     if (!fullUrl) {
       return res.status(400).json({ error: "Full URL is required" });
     }
 
+    // create a new short url
     const shortUrl = await ShortUrl.create({ full: fullUrl });
 
-    res.status(201).json({ shortUrl });
+    res.status(201).json({ shortUrl }); // success
   } catch (error) {
     console.error("Error creating short URL:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -125,8 +126,10 @@ app.post("/urls", async (req, res) => {
 // read all short URLs
 app.get("/urls", async (req, res) => {
   try {
+    // get all short urls
     const shortUrls = await ShortUrl.find();
-    res.status(200).json(shortUrls);
+
+    res.status(200).json(shortUrls); // success
   } catch (error) {
     console.error("Error reading short URLs:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -137,12 +140,16 @@ app.get("/urls", async (req, res) => {
 app.get("/urls/:id", async (req, res) => {
   try {
     const { id } = req.params;
+
+    // find a short url by its id
     const shortUrl = await ShortUrl.findById(id);
 
+    // url not found
     if (!shortUrl) {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
+    // success
     res.status(200).json(shortUrl);
   } catch (error) {
     console.error("Error reading short URL:", error);
@@ -156,20 +163,24 @@ app.put("/urls/:id", async (req, res) => {
     const { id } = req.params;
     const { fullUrl } = req.body;
 
+    // check if a valid full url is provided
     if (!fullUrl) {
       return res.status(400).json({ error: "Full URL is required" });
     }
 
+    // update the short url
     const shortUrl = await ShortUrl.findByIdAndUpdate(
       id,
       { full: fullUrl },
       { new: true }
     );
 
+    // url not found
     if (!shortUrl) {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
+    // success
     res.status(200).json(shortUrl);
   } catch (error) {
     console.error("Error updating short URL:", error);
@@ -181,12 +192,16 @@ app.put("/urls/:id", async (req, res) => {
 app.delete("/urls/:id", async (req, res) => {
   try {
     const { id } = req.params;
+
+    // find and delete a short url by its id
     const shortUrl = await ShortUrl.findByIdAndDelete(id);
 
+    // url not found
     if (!shortUrl) {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
+    // success
     res.status(204).send();
   } catch (error) {
     console.error("Error deleting short URL:", error);
