@@ -113,7 +113,6 @@ app.post("/urls", async (req, res) => {
       return res.status(400).json({ error: "Full URL is required" });
     }
 
-    // create a new short URL
     const shortUrl = await ShortUrl.create({ full: fullUrl });
 
     res.status(201).json({ shortUrl });
@@ -188,7 +187,7 @@ app.delete("/urls/:id", async (req, res) => {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
-    res.status(204).send(); // No content response for successful deletion
+    res.status(204).send();
   } catch (error) {
     console.error("Error deleting short URL:", error);
     res.status(500).json({ error: "Internal server error" });
