@@ -19,7 +19,7 @@ function Index({ shortUrls }) {
         <div className="container">
           <h1>URL Shortener</h1>
           <form action="/shorturls" method="POST" className="my-4 form-inline">
-            <label htmlFor="fullUrl" className="sr-only">
+            <label htmlFor="fullUrl" className="visually-hidden">
               URL
             </label>
             <input
@@ -31,7 +31,7 @@ function Index({ shortUrls }) {
               className="form-control col mr-2"
             />
             <button className="btn btn-success" type="submit">
-              Shrink
+              Shorten
             </button>
           </form>
 
@@ -40,7 +40,7 @@ function Index({ shortUrls }) {
               <tr>
                 <th>Full URL</th>
                 <th>Short URL</th>
-                <th>Action</th>
+                <th>Operation</th>
               </tr>
             </thead>
             <tbody>
