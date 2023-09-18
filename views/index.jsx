@@ -18,7 +18,7 @@ function Index({ shortUrls }) {
       <body>
         <div className="container">
           <h1>URL Shortener</h1>
-          <form action="/shorturls" method="POST" className="my-4 form-inline">
+          <form action="/urls" method="POST" className="my-4 form-inline">
             <label htmlFor="fullUrl" className="visually-hidden">
               URL
             </label>
