@@ -35,19 +35,19 @@ app.use(passport.session());
 
 // route for login page
 app.get("/login", (req, res) => {
-  res.render("login.ejs");
+  res.render("login.jsx");
 });
 
 // route for register page
 app.get("/register", (req, res) => {
-  res.render("register.ejs");
+  res.render("register.jsx");
 });
 
 // login post
 app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/index.ejs", // redirect on successful login
+    successRedirect: "/index.jsx", // redirect on successful login
     failureRedirect: "/login", // redirect on failed login
     failureFlash: true, // enable flash messages for login failures
   })
@@ -73,7 +73,7 @@ app.post("/register", async (req, res) => {
 
 // route for home page
 app.get("/index", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.jsx");
 });
 
 //url shortenr
@@ -103,6 +103,7 @@ app.get("/:shortUrl", async (req, res) => {
   res.redirect(shortUrl.full);
 });
 
+// CRUD
 // create a new short URL
 app.post("/urls", async (req, res) => {
   try {
