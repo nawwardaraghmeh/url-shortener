@@ -40,7 +40,7 @@ function Index({ shortUrls }) {
               <tr>
                 <th>Full URL</th>
                 <th>Short URL</th>
-                <th>Operation</th>
+                <th>Operations</th>
               </tr>
             </thead>
             <tbody>
@@ -53,16 +53,24 @@ function Index({ shortUrls }) {
                     <a href={shortUrl.short}>{shortUrl.short}</a>
                   </td>
                   <td>
-                    <form
-                      action={`/urls/${shortUrl._id}`}
-                      method="POST"
-                      style={{ display: "inline" }}
-                    >
-                      <input type="hidden" name="_method" value="DELETE" />
-                      <button className="btn btn-danger btn-sm" type="submit">
-                        Delete
-                      </button>
-                    </form>
+                    <div className="btn-group">
+                      <form
+                        action={`/urls/${shortUrl._id}`}
+                        method="POST"
+                        style={{ display: "inline" }}
+                      >
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button className="btn btn-danger btn-sm" type="submit">
+                          Delete
+                        </button>
+                      </form>
+                      <a
+                        href={`/urls/${shortUrl._id}`}
+                        className="btn btn-primary btn-sm"
+                      >
+                        Update
+                      </a>
+                    </div>
                   </td>
                 </tr>
               ))}
