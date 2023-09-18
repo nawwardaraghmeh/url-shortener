@@ -51,6 +51,7 @@ function Register({ messages }) {
               <div className="card bg-glass">
                 <div className="card-body px-4 py-5 px-md-5">
                   <form action="/register" method="POST">
+                    {/* error message  */}
                     <div className="row">
                       {messages.error && (
                         <div className="alert alert-danger">
@@ -58,6 +59,8 @@ function Register({ messages }) {
                         </div>
                       )}
                       <h1 className="mb-3 h3">Register</h1>
+
+                      {/* full name */}
                       <div className="col-md-12 mb-4">
                         <div className="form-outline">
                           <input
@@ -73,7 +76,7 @@ function Register({ messages }) {
                       </div>
                     </div>
 
-                    {/* Email */}
+                    {/* email */}
                     <div className="form-outline mb-4">
                       <input
                         type="email"
@@ -86,7 +89,7 @@ function Register({ messages }) {
                       </label>
                     </div>
 
-                    {/* Password */}
+                    {/* password */}
                     <div className="form-outline mb-4">
                       <input
                         type="password"
@@ -99,7 +102,7 @@ function Register({ messages }) {
                       </label>
                     </div>
 
-                    {/* Submit button */}
+                    {/* submit button */}
                     <button
                       type="submit"
                       className="btn btn-primary btn-block mb-4"
@@ -107,7 +110,7 @@ function Register({ messages }) {
                       Sign up
                     </button>
 
-                    {/* Login button */}
+                    {/* login button */}
                     <div className="text-center">
                       <p>
                         Already have an account? <a href="/login">Login</a>
