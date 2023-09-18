@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 
+const path = require("path");
 const bcrypt = require("bcrypt"); // for password hashing
 const passport = require("passport"); // import passport.js for authentication
 const initializePassport = require("./passport"); // to initialize passport.js
@@ -30,17 +31,24 @@ app.use(
     saveUninitialized: false, // don't create session until something is stored
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.set("views", path.join(__dirname, "views")); // set the directory for jsx views
+app.set("view engine", "jsx"); // set the view engine to use jsx
+
+// jsx rendering
+app.engine("jsx", require("express-react-views").createEngine());
+
 // route for login page
 app.get("/login", (req, res) => {
-  res.render("login.jsx");
+  res.render("login");
 });
 
 // route for register page
 app.get("/register", (req, res) => {
-  res.render("register.jsx");
+  res.render("register");
 });
 
 // login post
@@ -97,8 +105,6 @@ app.get("/", async (req, res) => {
 app.get("/:shortUrl", async (req, res) => {
   const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl }); // check if short url exists
   if (shortUrl == null) return res.sendStatus(404);
-
-  shortUrl.save();
 
   res.redirect(shortUrl.full);
 });
