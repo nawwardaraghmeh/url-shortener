@@ -84,7 +84,7 @@ app.get("/index", (req, res) => {
   res.render("index.jsx");
 });
 
-//url shortenr
+// URL shortener
 const mongoose = require("mongoose");
 const ShortUrl = require("./models/shortUrl");
 
@@ -95,7 +95,7 @@ mongoose.connect("mongodb://localhost/urlShortener", {
 
 app.use(express.urlencoded({ extended: false }));
 
-// handle get request for the root url to display the short version
+// handle get request for the root URL to display the short version
 app.get("/", async (req, res) => {
   const shortUrls = await ShortUrl.find();
   res.render("index", { shortUrls: shortUrls });
@@ -103,7 +103,7 @@ app.get("/", async (req, res) => {
 
 // handle requests to access short URLs
 app.get("/:shortUrl", async (req, res) => {
-  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl }); // check if short url exists
+  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl }); // check if short URL exists
   if (shortUrl == null) return res.sendStatus(404);
 
   res.redirect(shortUrl.full);
@@ -115,51 +115,17 @@ app.post("/urls", async (req, res) => {
   try {
     const { fullUrl } = req.body;
 
-    // check if a valid full url is provided
+    // check if a valid full URL is provided
     if (!fullUrl) {
       return res.status(400).json({ error: "Full URL is required" });
     }
 
-    // create a new short url
+    // create a new short URL
     const shortUrl = await ShortUrl.create({ full: fullUrl });
 
     res.status(201).json({ shortUrl }); // success
   } catch (error) {
     console.error("Error creating short URL:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// read all short URLs
-app.get("/urls", async (req, res) => {
-  try {
-    // get all short urls
-    const shortUrls = await ShortUrl.find();
-
-    res.status(200).json(shortUrls); // success
-  } catch (error) {
-    console.error("Error reading short URLs:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// read a specific short URL by ID
-app.get("/urls/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // find a short url by its id
-    const shortUrl = await ShortUrl.findById(id);
-
-    // url not found
-    if (!shortUrl) {
-      return res.status(404).json({ error: "Short URL not found" });
-    }
-
-    // success
-    res.status(200).json(shortUrl);
-  } catch (error) {
-    console.error("Error reading short URL:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -170,19 +136,19 @@ app.put("/urls/:id", async (req, res) => {
     const { id } = req.params;
     const { fullUrl } = req.body;
 
-    // check if a valid full url is provided
+    // check if a valid full URL is provided
     if (!fullUrl) {
       return res.status(400).json({ error: "Full URL is required" });
     }
 
-    // update the short url
+    // update the short URL
     const shortUrl = await ShortUrl.findByIdAndUpdate(
       id,
       { full: fullUrl },
       { new: true }
     );
 
-    // url not found
+    // URL not found
     if (!shortUrl) {
       return res.status(404).json({ error: "Short URL not found" });
     }
@@ -200,10 +166,10 @@ app.delete("/urls/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // find and delete a short url by its id
+    // find and delete a short URL by its ID
     const shortUrl = await ShortUrl.findByIdAndDelete(id);
 
-    // url not found
+    // URL not found
     if (!shortUrl) {
       return res.status(404).json({ error: "Short URL not found" });
     }
@@ -216,4 +182,6 @@ app.delete("/urls/:id", async (req, res) => {
   }
 });
 
-app.listen(5000);
+app.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});
