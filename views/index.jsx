@@ -65,7 +65,7 @@ function Index({ shortUrls }) {
                         </button>
                       </form>
                       <a
-                        href={`/urls/${shortUrl._id}`}
+                        href={`/urls/${shortUrl._id}/edit`}
                         className="btn btn-primary btn-sm"
                       >
                         Update
